@@ -1,0 +1,58 @@
+//Ali Jawad
+//Appraching Sensor
+//10/27/2024
+// defines pins numbers
+#define IN4  4 // Buzzer
+#define IN3 3  // LED
+const int trigPin = 5; // Trigger US
+const int echoPin = 6; // Echo US
+// defines variables
+long duration;
+int distance = 0;
+void setup() {
+pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+pinMode(4, OUTPUT); // Buzzer
+pinMode(3, OUTPUT); // LED 
+Serial.begin(9600); // Starts the serial communication
+}
+void loop() {
+if ((distance <5)&&(distance > 0))
+  {
+  digitalWrite(IN4, HIGH);   // turn the Buzzer on 
+  digitalWrite(IN3, HIGH);  //  turn the LED on
+}
+else if ((distance > 6)&&(distance < 10))
+  {
+  digitalWrite(IN4, HIGH);   // turn the Buzzer on
+  digitalWrite(IN3, HIGH);   // turn the LED on
+  delay(100*(distance-5));  // Time in MS
+  digitalWrite(IN4, LOW);   // turn the Buzzer on
+  digitalWrite(IN3, LOW);   // turn the LED on
+  delay(100*(distance-5));// wait for a set time
+  }
+else if ((distance > 10)&&(distance < 15)) {
+  digitalWrite(IN4, HIGH);   // turn the Buzzer on 
+  delay(1000);  
+  digitalWrite(IN4, LOW);   // turn the Buzzer on 
+  delay(1000);
+}
+else if (distance > 15){
+  digitalWrite(IN4, LOW);
+}
+delayMicroseconds(10);
+// Clears the trigPin
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+// Sets the trigPin on HIGH state time
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(12);
+digitalWrite(trigPin, LOW);
+// Reads the echoPin, returns the sound wave travel time
+duration = pulseIn(echoPin, HIGH);
+// Calculating the distance
+distance= duration*0.040/2;
+// Prints the distance on the Serial Monitor
+Serial.print("Distance: ");
+Serial.println(distance); //distance is the returned integer, it is the distance in cm
+}
